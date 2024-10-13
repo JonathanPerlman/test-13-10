@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { registerTeacher } from "../controllers/teacherController";
+import { registerTeacher, addGrade } from "../controllers/teacherController";
+import { isTeacher } from "../middleware/auteMiddleWare";
 
 const teacherRouter = Router();
 
@@ -33,6 +34,7 @@ const teacherRouter = Router();
  * 
  */
 teacherRouter.post("/register", registerTeacher);  
+teacherRouter.post("/addGrade", isTeacher, addGrade);  
 // teacherRouter.get("/", getTeachers); 
 
 export default teacherRouter;

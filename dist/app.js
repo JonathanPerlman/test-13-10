@@ -13,9 +13,11 @@ const swagger_1 = require("./swagger");
 const teacherRouter_1 = __importDefault(require("./routes/teacherRouter"));
 const studentRouter_1 = __importDefault(require("./routes/studentRouter"));
 const loginRouter_1 = __importDefault(require("./routes/loginRouter"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 3000;
+app.use((0, cookie_parser_1.default)());
 // Middleware
 app.use(express_1.default.json());
 app.use('/swagger', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.swaggerSpec));

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const teacherController_1 = require("../controllers/teacherController");
+const auteMiddleWare_1 = require("../middleware/auteMiddleWare");
 const teacherRouter = (0, express_1.Router)();
 /**
  * @swagger
@@ -31,5 +32,6 @@ const teacherRouter = (0, express_1.Router)();
  *
  */
 teacherRouter.post("/register", teacherController_1.registerTeacher);
+teacherRouter.post("/addGrade", auteMiddleWare_1.isTeacher, teacherController_1.addGrade);
 // teacherRouter.get("/", getTeachers); 
 exports.default = teacherRouter;

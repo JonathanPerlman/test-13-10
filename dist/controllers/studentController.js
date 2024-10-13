@@ -31,6 +31,7 @@ const registerStudent = (req, res) => __awaiter(void 0, void 0, void 0, function
             email,
             password,
             classroom: classroom._id,
+            roll: "student",
         });
         yield newStudent.save();
         (_a = classroom.students) === null || _a === void 0 ? void 0 : _a.push(newStudent._id);

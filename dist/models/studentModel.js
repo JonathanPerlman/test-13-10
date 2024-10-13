@@ -48,5 +48,6 @@ const studentSchema = new mongoose_1.Schema({
     },
     classroom: { type: mongoose_1.Schema.Types.ObjectId, ref: 'Classroom', required: true },
     grades: [gradeSchema],
+    roll: { type: String, required: true, enum: ["student"] },
 });
 exports.Student = mongoose_1.default.model('Student', studentSchema);

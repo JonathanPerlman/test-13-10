@@ -9,10 +9,13 @@ import { swaggerSpec } from "./swagger";
 import teacherRouter from "./routes/teacherRouter"
 import studentRouter from "./routes/studentRouter"
 import loginRouter from "./routes/loginRouter"
+import cookieParser from "cookie-parser";
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+app.use(cookieParser());
 
 // Middleware
 app.use(express.json());

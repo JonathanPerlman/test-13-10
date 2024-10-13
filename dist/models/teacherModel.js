@@ -43,5 +43,6 @@ const teacherSchema = new mongoose_1.Schema({
     password: { type: String, required: true, match: [/^[0-9]{9}$/, "password must be 9 digits"],
     },
     classroom: { type: mongoose_1.Schema.Types.ObjectId, ref: 'Classroom', required: true },
+    roll: { type: String, required: true, enum: ["teacher"] },
 });
 exports.Teacher = mongoose_1.default.model('Teacher', teacherSchema);

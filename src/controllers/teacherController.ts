@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Teacher } from "../models/teacherModel";
 import { Classroom } from "../models/classModel";
 import { Types } from "mongoose";
+import { Student } from "../models/studentModel";
 
 export const registerTeacher = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -35,3 +36,21 @@ export const registerTeacher = async (req: Request, res: Response): Promise<void
     res.status(500).json({ error: error });
   }
 }
+
+export const addGrade = async (req: Request, res: Response): Promise<void> => {
+  const { studentId, comment, score } = req.body;
+  try {
+    const student = await Student.findById(studentId);
+    if (!student) {
+      res.status(404).json({ error: "Student not found" });
+      return;
+    }
+    student.grades.push({ comment, score });  
+    await student.save();
+    res.status(200).json({ message: "Grade added successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error });
+  }
+}
+

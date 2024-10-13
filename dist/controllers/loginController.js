@@ -17,20 +17,20 @@ const teacherModel_1 = require("../models/teacherModel");
 const studentModel_1 = require("../models/studentModel");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email, password } = req.body;
     try {
-        const { email, password } = req.body;
-        const user = email ? yield teacherModel_1.Teacher.findOne({ email }) : yield studentModel_1.Student.findOne({ email });
+        const user = yield findUserByEmail(email);
         if (!user) {
             res.status(404).json({ error: "User not found" });
             return;
         }
-        if (user.password !== password) {
+        if (!isPasswordValid(user, password)) {
             res.status(401).json({ error: "Invalid password" });
             return;
         }
-        const token = jsonwebtoken_1.default.sign({ _id: user._id, email: user.email }, process.env.SECRET_KEY, { expiresIn: "1h" });
+        const token = createToken(user);
         res.cookie("token", token, { maxAge: 600000 });
-        res.status(200).json({ token: token, success: true });
+        res.status(200).json({ token, success: true });
     }
     catch (error) {
         console.error(error);
@@ -38,3 +38,12 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.login = login;
+const findUserByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    return (yield studentModel_1.Student.findOne({ email })) || (yield teacherModel_1.Teacher.findOne({ email }));
+});
+const isPasswordValid = (user, password) => {
+    return user.password === password;
+};
+const createToken = (user) => {
+    return jsonwebtoken_1.default.sign({ _id: user._id, email: user.email, roll: user.roll }, process.env.SECRET_KEY, { expiresIn: "1h" });
+};

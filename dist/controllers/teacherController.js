@@ -9,9 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginTeacher = exports.registerTeacher = void 0;
+exports.addGrade = exports.registerTeacher = void 0;
 const teacherModel_1 = require("../models/teacherModel");
 const classModel_1 = require("../models/classModel");
+const studentModel_1 = require("../models/studentModel");
 const registerTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, email, password, className } = req.body;
@@ -32,6 +33,7 @@ const registerTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function
             email,
             password,
             classroom: newClass._id,
+            roll: "teacher",
         });
         yield newTeacher.save();
         newClass.teacher = newTeacher._id;
@@ -44,24 +46,21 @@ const registerTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.registerTeacher = registerTeacher;
-const loginTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const addGrade = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { studentId, comment, score } = req.body;
     try {
-        const { email, password } = req.body;
-        const teacher = yield teacherModel_1.Teacher.findOne({ email, password });
-        if (!teacher) {
-            res.status(401).json({ error: "Invalid email or password" });
+        const student = yield studentModel_1.Student.findById(studentId);
+        if (!student) {
+            res.status(404).json({ error: "Student not found" });
             return;
         }
-        const classroom = yield classModel_1.Classroom.findById(teacher.classroom);
-        if (!classroom) {
-            res.status(404).json({ error: "Classroom not found" });
-            return;
-        }
-        res.status(200).json({ teacher, classroom });
+        student.grades.push({ comment, score });
+        yield student.save();
+        res.status(200).json({ message: "Grade added successfully" });
     }
     catch (error) {
         console.error(error);
-        res.status(500).json({ error: error || "An error occurred" });
+        res.status(500).json({ error: error });
     }
 });
-exports.loginTeacher = loginTeacher;
+exports.addGrade = addGrade;
