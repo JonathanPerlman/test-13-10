@@ -23,6 +23,7 @@ export const registerTeacher = async (req: Request, res: Response): Promise<void
       email,
       password,
       classroom: newClass._id,
+      roll: "teacher",
     });
     await newTeacher.save(); 
     newClass.teacher = newTeacher._id as Types.ObjectId;

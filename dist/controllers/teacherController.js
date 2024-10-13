@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registerTeacher = void 0;
+exports.loginTeacher = exports.registerTeacher = void 0;
 const teacherModel_1 = require("../models/teacherModel");
 const classModel_1 = require("../models/classModel");
 const registerTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -44,3 +44,24 @@ const registerTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.registerTeacher = registerTeacher;
+const loginTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email, password } = req.body;
+        const teacher = yield teacherModel_1.Teacher.findOne({ email, password });
+        if (!teacher) {
+            res.status(401).json({ error: "Invalid email or password" });
+            return;
+        }
+        const classroom = yield classModel_1.Classroom.findById(teacher.classroom);
+        if (!classroom) {
+            res.status(404).json({ error: "Classroom not found" });
+            return;
+        }
+        res.status(200).json({ teacher, classroom });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error || "An error occurred" });
+    }
+});
+exports.loginTeacher = loginTeacher;

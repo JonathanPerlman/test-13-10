@@ -9,7 +9,7 @@ const teacherRouter = Router();
  * @swagger
  * /teachers/register:
  *  post:
- *      summary: register user
+ *      summary: register teacher
  *      requestBody:
  *          required: true
  *          content:

@@ -8,6 +8,7 @@ import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from "./swagger";
 import teacherRouter from "./routes/teacherRouter"
 import studentRouter from "./routes/studentRouter"
+import loginRouter from "./routes/loginRouter"
 dotenv.config();
 
 const app = express();
@@ -21,6 +22,7 @@ connectDB();
 // Routes
 app.use("/teachers", teacherRouter);;
 app.use("/students", studentRouter);;
+app.use("/", loginRouter);;
 
 
 // Error handling middleware

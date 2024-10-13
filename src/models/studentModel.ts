@@ -12,6 +12,7 @@ interface IStudent extends Document {
   password: string;
   classroom: mongoose.Types.ObjectId; 
   grades: IGrade[];
+  roll: string;
 }
 
 const gradeSchema = new Schema<IGrade>({
@@ -33,7 +34,8 @@ const studentSchema = new Schema<IStudent>({
   password: { type: String, required: true,  match: [/^[0-9]{9}$/, "password must be 9 digits"]
   },
   classroom: { type: Schema.Types.ObjectId, ref: 'Classroom', required: true },
-  grades: [gradeSchema], 
+  grades: [gradeSchema],
+  roll: { type: String, required: true, enum: ["student"] }, 
 });
 
 export const Student = mongoose.model<IStudent>('Student', studentSchema);

@@ -12,6 +12,7 @@ const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const swagger_1 = require("./swagger");
 const teacherRouter_1 = __importDefault(require("./routes/teacherRouter"));
 const studentRouter_1 = __importDefault(require("./routes/studentRouter"));
+const loginRouter_1 = __importDefault(require("./routes/loginRouter"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 3000;
@@ -23,6 +24,8 @@ app.use('/swagger', swagger_ui_express_1.default.serve, swagger_ui_express_1.def
 app.use("/teachers", teacherRouter_1.default);
 ;
 app.use("/students", studentRouter_1.default);
+;
+app.use("/", loginRouter_1.default);
 ;
 // Error handling middleware
 app.use(errorHandler_1.errorHandler);

@@ -22,6 +22,7 @@ export const registerStudent = async (req: Request, res: Response): Promise<void
       email,
       password,
       classroom: classroom._id,
+      roll: "student",
     });
     await newStudent.save();
     classroom.students?.push(newStudent._id as Types.ObjectId);
